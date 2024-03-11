@@ -16,6 +16,7 @@ class Config:
             cls.learning_rate = 1e-2
             cls.eval_iters = 200
             cls.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            cls.n_embd = 32  # number of embedding dimensions
         return cls._instance
 
     def set_vocab_size(self, vocab_size):
@@ -23,7 +24,6 @@ class Config:
 
     def is_set_vocab_size(self):
         return self.vocab_size is not None
-
 
 
 """

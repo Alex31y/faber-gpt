@@ -1,0 +1,24 @@
+parliamo di `cfg.n_embd`.
+
+Nel contesto di una rete neurale, specialmente nei modelli di linguaggio, un "embedding" è una rappresentazione vettoriale di qualcosa, tipicamente di parole o frasi. Questi vettori catturano significati semantici, relazioni e altre proprietà linguistiche in modo che le parole con significati simili siano rappresentate da vettori simili.
+
+Quando vedi `cfg.n_embd`, stai vedendo un parametro configurabile che definisce la dimensione di questi vettori di embedding. Per esempio, se `cfg.n_embd` è 768, significa che ogni token (parola o pezzo di testo) nell'input del modello viene trasformato in un vettore di 768 numeri. Ogni numero in questo vettore rappresenta una certa caratteristica o aspetto del token.
+
+### Perché è importante la dimensione dell'embedding?
+
+- **Rappresentazione Ricca**: Maggiore è la dimensione dell'embedding, più dettagli o sfumature del significato del token possono essere catturati. Tuttavia, dimensioni più grandi possono anche significare maggiore complessità computazionale e maggiori risorse richieste per l'addestramento e l'inferenza.
+
+- **Capacità del Modello**: La dimensione dell'embedding contribuisce direttamente alla capacità del modello di apprendere e rappresentare complessità linguistiche. Un modello con embedding di dimensione maggiore può teoricamente catturare relazioni più complesse tra i tokens, ma richiede più dati per l'addestramento per evitare il sovraadattamento.
+
+- **Adattabilità**: La scelta di `cfg.n_embd` dipende dall'applicazione specifica, dalla quantità di dati disponibili, dalla complessità del linguaggio o del dominio da modellare e dalle risorse computazionali a disposizione.
+
+In sintesi, `cfg.n_embd` configura la dimensione degli spazi in cui i tokens vengono rappresentati all'interno del modello. Questi spazi vettoriali consentono al modello di utilizzare l'apprendimento automatico per comprendere e generare lingua in un modo incredibilmente ricco e sfumato.
+
+
+
+metodo __init__
+self.token_embedding_table: This is an embedding table for the tokens in your vocabulary. It maps each token ID to a high-dimensional vector. The nn.Embedding(cfg.vocab_size, cfg.n_embd) call creates an embedding layer with cfg.vocab_size entries, each of which is a vector of size cfg.n_embd. This is typically used to learn dense representations of tokens.
+
+self.lm_head: This is a linear layer that maps the high-dimensional representations of tokens back to the vocabulary space. The nn.Linear(cfg.n_embd, cfg.vocab_size) call creates a linear transformation that takes an input of size cfg.n_embd and outputs a vector of size cfg.vocab_size. This is often used in language models to predict the next token given the current state.
+
+The super().__init__() call at the beginning of the __init__ method ensures that the initialization logic of the base class is also executed, which is essential when you're extending another class that might have its own initialization requirements.

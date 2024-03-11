@@ -1,20 +1,29 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
+from config import Config
+
+cfg = Config()
 
 
 # class faber gpt model
 class FaberGPT(nn.Module):
 
-    def __init__(self, vocab_size):
+    def __init__(self):
         super().__init__()
         # each token directly reads off the logits for the next token from a lookup table
-        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+        self.token_embedding_table = nn.Embedding(cfg.vocab_size, cfg.n_embd)
+        self.position_embedding_table = nn.Embedding(cfg.blocksize, cfg.n_embd)
+        self.lm_head = nn.Linear(cfg.n_embd, cfg.vocab_size)
 
     def forward(self, idx, targets=None):
+        B, T = idx.shape
 
         # idx and targets are both (B,T) tensor of integers
-        logits = self.token_embedding_table(idx)  # (B,T,C)
+        tok_emb = self.token_embedding_table(idx)  # (B,T,C)
+        pos_emb = self.position_embedding_table(torch.arange(T, device=cfg.device)) # (T,C) cose incredibili con le matrici
+        x = tok_emb + pos_emb # (B,T,C) x ora non solo ha l'embedding significato delle parole ma manche l'embedded signiticato della posizione nel contesto!
+        logits = self.lm_head(tok_emb)  # (B,T,vocab_size)
 
         if targets is None:
             loss = None

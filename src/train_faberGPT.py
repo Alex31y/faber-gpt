@@ -50,7 +50,7 @@ def estimate_loss():
     return out
 
 
-model = FaberGPT(cfg.vocab_size)
+model = FaberGPT()
 m = model.to(cfg.device)
 
 # create a PyTorch optimizer
